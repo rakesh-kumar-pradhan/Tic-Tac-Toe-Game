@@ -12,17 +12,20 @@ export const setDraw = () => ({
   type: types.SET_DRAW,
 });
 
-export const createNewGame = () => ({
+export const createNewGame = (squares) => ({
   type: types.CREATE_NEW_GAME,
+  squares: squares,
 });
 
-export const resetGameState = () => ({
+export const resetGameState = (squares) => ({
   type: types.RESET_GAME_STATE,
+  squares: squares,
 });
 
-export const setWhoMoveFirst = (isXMoveFirst) => ({
+export const setWhoMoveFirst = (isXMoveFirst,squares) => ({
   type: types.SET_WHO_MOVE_FIRST,
   isXMoveFirst: isXMoveFirst,
+  squares: squares,
 });
 
 export const makeMove = (squares) => ({

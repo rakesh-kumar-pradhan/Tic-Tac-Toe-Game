@@ -11,13 +11,17 @@ export const types = {
   SET_AI_TURN: "SET_AI_TURN"
 };
 
+
+
+
+
 // initial state
 export const initialState = {
   isGameEnd: false,
   xWinCounter: 0,
   oWinCounter: 0,
   drawCounter: 0,
-  squares: Array(9).fill(null),
+  squares: Array(maze).fill(null),
   isTurnX: true,
   isPvP: false,
   player: null,
@@ -25,6 +29,18 @@ export const initialState = {
   winner: false,
 };
 
+
+var maze = localStorage.getItem("maze");
+maze=parseInt(maze)
+// let initialState1 ={profile: JSON.parse(localStorage.getItem('profile'))};
+// let initialState ;
+
+if(maze!= null){
+ initialState.maze=maze;
+}else{
+  initialState =initialState;
+}
+alert(initialState.maze)
 // root reducer
 export const rootReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -60,7 +76,7 @@ export const rootReducer = (state = initialState, action) => {
     case types.CREATE_NEW_GAME:
       return {
         ...state,
-        squares: Array(9).fill(null),
+        squares: action.squares ?action.squares:Array(maze).fill(null),
         isGameEnd: false,
         player: (state.isTurnX && !state.isTurnAI) || (!state.isTurnX && state.isTurnAI) ? 'x' : 'o',
       };
@@ -72,7 +88,7 @@ export const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         isTurnX: action.isXMoveFirst,
-        squares: Array(9).fill(null),
+        squares:  action.squares ?action.squares:Array(maze).fill(null),
         isGameEnd: false,
         player: (state.isTurnX && !state.isTurnAI) || (!state.isTurnX && state.isTurnAI) ? 'x' : 'o',
       }
