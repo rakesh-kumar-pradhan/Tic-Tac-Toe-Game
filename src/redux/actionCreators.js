@@ -14,7 +14,7 @@ export const setDraw = () => ({
 
 export const createNewGame = (squares) => ({
   type: types.CREATE_NEW_GAME,
-  squares: squares,
+  // squares: squares,
 });
 
 export const resetGameState = (squares) => ({
