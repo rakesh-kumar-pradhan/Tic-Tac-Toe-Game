@@ -1,5 +1,6 @@
 @import url("https://fonts.googleapis.com/css?family=Ubuntu:700");
 
+
 @keyframes slideFadeDown {
   0% {
     opacity: 1;
@@ -42,10 +43,11 @@ body {
 }
 
 .game-wrap {
-  max-width: 280px;
-  margin: 100px auto 0;
-  padding: 20px 20px 30px;
-  border: 1px solid #79cadc;
+  max-width: 300px;
+  margin: 50px auto 0;
+  // margin:  auto;
+  padding: 0px 20px 30px;
+  // border: 1px solid #79cadc;
   box-sizing: border-box;
   box-shadow: 1px 6px 30px 0 rgba(#79cadc, 0.4);
   position: relative;
@@ -119,7 +121,10 @@ body {
         background-image: url(images/o.png);
       }
       &.side-skip {
-        // background-image: url(images/o.png);
+        background-image: url(images/skip.png);
+      }
+      &.side-start {
+        background-image: url(images/start.jpg);
       }
     }
   }
@@ -272,7 +277,7 @@ body {
   .winning-line-wrap-0-20,
   .winning-line-wrap-1-21,
   .winning-line-wrap-2-22,
-  .winning-line-wrap-3-23
+  .winning-line-wrap-3-23,
   .winning-line-wrap-4-24{
     transform: rotate(90deg);
     transform-origin: top left;
@@ -291,10 +296,10 @@ body {
   }
 
   .winning-line-wrap-3-23 {
-    left: 50.3333%;
+    left: 70.3333%;
   }
   .winning-line-wrap-4-24 {
-    left: 50.3333%;
+    left: 89.3333%;
   }
 
   .winning-line-wrap-0-24,
@@ -314,7 +319,7 @@ body {
   }
 
 
-    //for 5*5
+    //for 4*4
     .winning-line-wrap-0-4 {
       top: 11.6667%;
     }

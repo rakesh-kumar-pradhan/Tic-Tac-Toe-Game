@@ -38,6 +38,11 @@ export const setGameMode = (isPvp) => ({
   isPvp: isPvp,
 })
 
+export const setGameStart = (start) => ({
+  type: types.SET_GAME_START,
+  start: start,
+})
+
 export const setAITurn = (isTurnAI) => ({
   type: types.SET_AI_TURN,
   isTurnAI: isTurnAI,

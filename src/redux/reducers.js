@@ -8,11 +8,9 @@ export const types = {
   RESET_GAME_STATE: "RESET_GAME_STATE",
   SET_WHO_MOVE_FIRST: "SET_WHO_MOVE_FIRST",
   SET_GAME_MODE: "SET_GAME_MODE",
-  SET_AI_TURN: "SET_AI_TURN"
+  SET_AI_TURN: "SET_AI_TURN",
+  SET_GAME_START:"SET_GAME_START",
 };
-
-
-
 
 
 // initial state
@@ -24,23 +22,23 @@ export const initialState = {
   squares: Array(maze).fill(null),
   isTurnX: true,
   isPvP: false,
+  start:false,
   player: null,
   isTurnAI: false,
   winner: false,
 };
 
-
+//  localStorage.setItem("maze",9);
 var maze = localStorage.getItem("maze");
 maze=parseInt(maze)
 // let initialState1 ={profile: JSON.parse(localStorage.getItem('profile'))};
 // let initialState ;
 
-if(maze!= null){
+if(maze!=null){
  initialState.maze=maze;
 }else{
   initialState =initialState;
 }
-alert(initialState.maze)
 // root reducer
 export const rootReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -106,6 +104,12 @@ export const rootReducer = (state = initialState, action) => {
         isPvP: action.isPvp
       }
 
+      case types.SET_GAME_START:
+        return {
+          ...state,
+          start:action.start
+        }
+        
     case types.SET_AI_TURN:
       return {
         ...state,

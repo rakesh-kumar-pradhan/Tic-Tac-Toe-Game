@@ -2,13 +2,13 @@
 
 export class Board {
   // by default the board is empty and X goes first
-  constructor(position = Array(16).fill(0), turn = 'x') {
+  constructor(position = Array(25).fill(0), turn = "x") {
     this.position = position;
     this.turn = turn;
   }
 
   opositeTurn() {
-    return this.turn === 'x' ? 'o' : 'x';
+    return this.turn === "x" ? "o" : "x";
   }
 
   // location can be 0-8, indicating where to move
@@ -28,7 +28,6 @@ export class Board {
         moves.push(i);
       }
     }
-
     return moves;
   }
 
@@ -43,8 +42,7 @@ export class Board {
     //   || (this.position[0] && this.position[0] === this.position[4] && this.position[0] === this.position[8]) // diag 0
     //   || (this.position[2] && this.position[2] === this.position[4] && this.position[2] === this.position[6]) // diag 1
     // ;
-
-       // [0, 1, 2, 3],
+    // [0, 1, 2, 3],
     // [4, 5, 6, 7],
     // [8, 9, 10, 11],
     // [12, 13, 14, 15],
@@ -55,19 +53,19 @@ export class Board {
     // [0, 5, 10, 15],
     // [3, 6, 9, 12],
     // && squares[a] === squares[d]
-  //   return
-  //       {squares[a] && squares[a]      ===         squares[b] && squares[a] ===                 squares[c] && squares[a] === squares[d]}
-//    return(this.position[0] && this.position[0] === this.position[1] && this.position[0] === this.position[2] && this.position[0] === this.position[3])
-//     || (this.position[4] && this.position[4] === this.position[5] && this.position[4] === this.position[6] &&  this.position[4] === this.position[7])
-//     || (this.position[8] && this.position[8] === this.position[9] && this.position[8] === this.position[10] &&  this.position[8] === this.position[11])
-//     || (this.position[12] && this.position[12] === this.position[13] && this.position[12] === this.position[14] &&  this.position[12] === this.position[15])
-//     || (this.position[0] && this.position[0] === this.position[4] && this.position[0] === this.position[8] &&  this.position[0] === this.position[12])
-//     || (this.position[1] && this.position[1] === this.position[5] && this.position[1] === this.position[9] &&  this.position[1] === this.position[13])
-//     || (this.position[2] && this.position[2] === this.position[6] && this.position[2] === this.position[10] &&  this.position[2] === this.position[14])
-//     || (this.position[3] && this.position[3] === this.position[7] && this.position[3] === this.position[11] &&  this.position[3] === this.position[15])
-//     || (this.position[0] && this.position[0] === this.position[5] && this.position[0] === this.position[10] &&  this.position[0] === this.position[15])
-//     || (this.position[3] && this.position[3] === this.position[6] && this.position[3] === this.position[9] &&  this.position[3] === this.position[12])
-// ;
+    //   return
+    //       {squares[a] && squares[a]      ===         squares[b] && squares[a] ===                 squares[c] && squares[a] === squares[d]}
+    //    return(this.position[0] && this.position[0] === this.position[1] && this.position[0] === this.position[2] && this.position[0] === this.position[3])
+    //     || (this.position[4] && this.position[4] === this.position[5] && this.position[4] === this.position[6] &&  this.position[4] === this.position[7])
+    //     || (this.position[8] && this.position[8] === this.position[9] && this.position[8] === this.position[10] &&  this.position[8] === this.position[11])
+    //     || (this.position[12] && this.position[12] === this.position[13] && this.position[12] === this.position[14] &&  this.position[12] === this.position[15])
+    //     || (this.position[0] && this.position[0] === this.position[4] && this.position[0] === this.position[8] &&  this.position[0] === this.position[12])
+    //     || (this.position[1] && this.position[1] === this.position[5] && this.position[1] === this.position[9] &&  this.position[1] === this.position[13])
+    //     || (this.position[2] && this.position[2] === this.position[6] && this.position[2] === this.position[10] &&  this.position[2] === this.position[14])
+    //     || (this.position[3] && this.position[3] === this.position[7] && this.position[3] === this.position[11] &&  this.position[3] === this.position[15])
+    //     || (this.position[0] && this.position[0] === this.position[5] && this.position[0] === this.position[10] &&  this.position[0] === this.position[15])
+    //     || (this.position[3] && this.position[3] === this.position[6] && this.position[3] === this.position[9] &&  this.position[3] === this.position[12])
+    // ;
   }
   //
   isDraw() {
@@ -77,11 +75,14 @@ export class Board {
 
 const minimax = (board, maximizing, originalPlayer) => {
   // base case - evaluate the position if it is a win or a draw
-  if (originalPlayer === board.opositeTurn()) { // win
+  if (originalPlayer === board.opositeTurn()) {
+    // win
     return 1;
-  } else if (originalPlayer !== board.opositeTurn()) { // loss
+  } else if (originalPlayer !== board.opositeTurn()) {
+    // loss
     return -1;
-  } else if (board.isDraw()) { // draw
+  } else if (board.isDraw()) {
+    // draw
     return 0;
   }
 
@@ -95,31 +96,30 @@ const minimax = (board, maximizing, originalPlayer) => {
     }
 
     return bestEval;
-  } else { // minimizing
+  } else {
+    // minimizing
     var worstEval = Number.MAX_SAFE_INTEGER;
 
     for (let move of board.legalMoves()) {
       const result = minimax(board.move(move), true, originalPlayer);
       worstEval = Math.min(result, worstEval);
     }
-
     return worstEval;
   }
-}
+};
 
 // run minimax on every possible move to find the best one
 export const findBestMove = (board) => {
-   var bestEval = Number.MIN_SAFE_INTEGER;
-   var bestMove = -1;
+  var bestEval = Number.MIN_SAFE_INTEGER;
+  var bestMove = -1;
 
   for (let move of board.legalMoves()) {
-   const result = minimax(board.move(move), false, board.turn);
+    const result = minimax(board.move(move), false, board.turn);
 
-   if (result > bestEval) {
-     bestEval = result;
-     bestMove = move;
-   }
+    if (result > bestEval) {
+      bestEval = result;
+      bestMove = move;
+    }
   }
-
- return bestMove;
-}
+  return bestMove;
+};

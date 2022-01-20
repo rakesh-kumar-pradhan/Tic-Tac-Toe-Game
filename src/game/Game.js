@@ -4,7 +4,7 @@ import Board from "./Board";
 import xImage from "../images/x.png";
 import oImage from "../images/o.png";
 import { resetGameState, createNewGame } from "../redux/actionCreators";
-import { setGameMode, setWhoMoveFirst, setAITurn, setXWin, setOWin, setDraw } from "../redux/actionCreators";
+import { setGameMode, setWhoMoveFirst, setAITurn, setXWin, setOWin, setDraw ,setGameStart} from "../redux/actionCreators";
 import PieceChooser from "./PieceChooser";
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
@@ -23,10 +23,12 @@ export class Game extends Component {
   }
   state = {
     open: false,
+    start:false,
   };
 
   resetGame() {
     if (!this.props.isGameEnd) {
+      // alert(this.props.isGameEnd)
       this.props.resetGame();
     let maze= parseInt(localStorage.getItem("maze"));
       this.props.setWhoMoveFirst(Array(maze).fill(null));
@@ -35,8 +37,8 @@ export class Game extends Component {
       clearTimeout(this.timeout);
       this.props.createNewGame();
       let maze= parseInt(localStorage.getItem("maze"));
-      // this.props.setWhoMoveFirst(Array(maze).fill(null));
-      // this.props.createNewGame(Array(maze).fill(null));
+      this.props.setWhoMoveFirst(Array(maze).fill(null));
+      this.props.createNewGame(Array(maze).fill(null));
       console.log(this.props.createNewGame)
     }
   }
@@ -73,20 +75,37 @@ export class Game extends Component {
     localStorage.setItem("maze", 9);
     this.props.setWhoMoveFirst(Array(9).fill(null));
     this.props.createNewGame(Array(9).fill(null));
+    this.props.setGameStart(false)
     this.setState({open:false});
   }
   selectMaze4 =()=>{
     localStorage.setItem("maze", 16);
     this.props.setWhoMoveFirst(Array(16).fill(null));
     this.props.createNewGame(Array(16).fill(null));
+    this.props.setGameStart(false)
     this.setState({open:false});
   }
   selectMaze5 =()=>{
     localStorage.setItem("maze", 25);
     this.props.setWhoMoveFirst(Array(25).fill(null));
     this.props.createNewGame(Array(25).fill(null));
+    this.props.setGameStart(false)
     this.setState({open:false});
   }
+
+  
+  handleStart = () => {
+    localStorage.setItem("start", true);
+    if(this.state.start===true){
+    this.setState({start:false});
+    this.props.setGameStart(false);
+    }else{
+      this.setState({start:true});
+      this.props.setGameStart(true);
+   
+    }
+  };
+
   render() {
     const Transition = React.forwardRef(function Transition(props, ref) {
       return <Slide direction="up" ref={ref} {...props} />;
@@ -94,8 +113,10 @@ export class Game extends Component {
     return (
       <div className="game-wrap">
         <PieceChooser />
-{/* {alert(this.props.isGameEnd)} */}
 <div style={{textAlign:"center",padding:"10px"}}><span><TimerStart/></span> </div>
+<div style={{textAlign:"center",padding:"10px" ,}}><Button  onClick={() =>this.handleStart() }  variant="contained" style={{
+  background: "#277db496",
+  borderRadius: "20px"}}>START </Button></div>
         <div className="status">
           <div className="status-o">
             <span className="win-counter">{this.props.oWinCounter} {this.props.oWinCounter < 2 ? 'win' : 'wins'}</span>
@@ -133,11 +154,13 @@ export class Game extends Component {
          keepMounted
         aria-describedby="alert-dialog-slide-description"
       >
-        <DialogTitle>{"Select the size of maze?"}</DialogTitle>
+        <DialogTitle><p style={{    fontFamily: "cursive",
+    fontSize: "21px",
+    fontWeight: "800"}}>{"Select the size of maze !!"}</p></DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-slide-description">
           <div className="buttons">
-        <Button onClick={this.selectMaze3}><h1>3×3</h1></Button>  
+          <Button onClick={this.selectMaze3}><h1>3×3</h1></Button>  
           <Button onClick={this.selectMaze4}><h1>4×4</h1></Button>
           <Button onClick={this.selectMaze5}><h1>5×5</h1></Button>
           </div>
@@ -163,7 +186,9 @@ const mapStateToProps = state => {
     squares:state.squares,
     isGameEnd: state.isGameEnd,
     isPvP: state.isPvP,
-    winner:state.winner
+    winner:state.winner,
+    start:state.start,
+    player: state.player
   };
 }
 
@@ -178,7 +203,10 @@ const mapDispatchToProps = dispatch => {
     },
     createNewGame: (squares) => {
       dispatch(createNewGame(squares));
-    }
+    },
+    setGameStart: start => {
+      dispatch(setGameStart(start));
+    },
   };
 }
 
