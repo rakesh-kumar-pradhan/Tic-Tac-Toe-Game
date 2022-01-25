@@ -14,7 +14,7 @@ export const setDraw = () => ({
 
 export const createNewGame = (squares) => ({
   type: types.CREATE_NEW_GAME,
-  // squares: squares,
+  squares: squares,
 });
 
 export const resetGameState = (squares) => ({
@@ -46,4 +46,9 @@ export const setGameStart = (start) => ({
 export const setAITurn = (isTurnAI) => ({
   type: types.SET_AI_TURN,
   isTurnAI: isTurnAI,
+})
+
+export const setSquares = (squares) => ({
+  type: types.SET_SQUARSE,
+  squares: squares,
 })

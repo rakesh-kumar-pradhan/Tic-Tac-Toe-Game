@@ -17,21 +17,28 @@ const formatTime = (time) =>
     time % 60
   ).padStart(2, "0")}`;
 
-const Timer = ({ time }) => {
+const Timer = ({ time ,pause}) => {
   var maze = localStorage.getItem("maze");
+  const [TimeSet,setTimeSet ]= useState(0);
+  const [TurnSet,setTurnSet ]= useState(0);
   maze=parseInt(maze)
-let RESET_INTERVAL_S =0; // 300s = 5m * 60s/m
-if(maze===9){
-  RESET_INTERVAL_S=60;
-}
-else if(maze===16){
-  RESET_INTERVAL_S=120;
+// let RESET_INTERVAL_S =0; // 300s = 5m * 60s/m
 
+useEffect(() => {
+
+  }, [maze,TimeSet]);
+if(maze===9 && TimeSet===0 || maze===9 && TimeSet===120 || maze===9 && TimeSet===180){
+  setTimeSet(60);
 }
-else if(maze===25){
-  RESET_INTERVAL_S=180;
+else if(maze===16 &&  TimeSet===60 || maze===16 &&  TimeSet===180 ){
+//  alert(TimeSet)
+  setTimeSet(120);
 }
-  const timeRemain = RESET_INTERVAL_S - (time % RESET_INTERVAL_S);
+else if(maze===25 &&  TimeSet===120 || maze===25 &&  TimeSet===60) {
+  setTimeSet(180);
+}
+
+  const timeRemain = TimeSet - (time % TimeSet);
 
   return (
     <>
@@ -45,35 +52,58 @@ else if(maze===25){
 
 const IntervalTimerFunctional = (props) => {
 const [time, setTime] = useState(0);
+const [pause, setPause] = useState(true);
 var maze = localStorage.getItem("maze");
+var dd = localStorage.getItem("start");
   maze=parseInt(maze)
-  // alert(props.start)
 
   useEffect(() => {
-  //   60s (for 3x3),
-  //   120s (for 4x4) or
-  //  180s (for 5x5) 
-  // alert(props.winner +"winner")
-  if(props.start===true){
-  if(maze===9){
-    setTime(0);
-  }
-  else if(maze===16){
-    setTime(0);
-  }
-  else if(maze===25){
-    setTime(0);
-  }
+  if(dd==="true" ){
+    setPause(false);
+
+    if(props.winner){
+      setPause(false);
+    localStorage.setItem("start",true);
+      setTime(0);
+    }else
+    {
+      localStorage.setItem("start",true);
+    }
+  // if(maze===9){
+  //    setTime(0);
+  // }
+  // else if(maze===16){
+  //   setTime(0);
+  // }
+  // else if(maze===25){
+  //   setTime(0);
+  // }
+
+  // const timerId = setInterval(() => {
+  //   setTime((t) => t + 1);
+  // }, 1000);
+  // return () => clearInterval(timerId);
 
   const timerId = setInterval(() => {
-    setTime((t) => t + 1);
+    // alert("fdfds")
+    if(dd==="true") { //I used '!paused' because I set pause initially to false. 
+    
+      // if (time) {
+          setTime((t) => t + 1);
+   //   }
+  }
   }, 1000);
   return () => clearInterval(timerId);
-}
-  
-  }, [maze,props.start, props.winner]);
 
-  return <Timer time={time} />;
+
+  } else if(dd==="false"){
+    // alert("pause")
+    setPause(!pause);
+  }
+    // clearInterval(timerId);
+  }, [dd,maze,props.start, props.winner]);
+
+  return <Timer time={time}  pause={pause} />;
 };
 
 // class IntervalTimerClass extends Component {

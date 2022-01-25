@@ -8,6 +8,7 @@ import {
   setOWin,
   setDraw,
   setWhoMoveFirst,
+  setSquares,
   createNewGame,
 } from "../redux/actionCreators";
 import {NotificationContainer, NotificationManager} from 'react-notifications';
@@ -117,37 +118,21 @@ export class Board extends Component {
 
     const squares = this.props.squares.slice();
     squares[i] = this.props.isTurnX ? "x" : "o";
-    if(this.props.squares.length===maze1){
-      // alert("hello" +this.props.squares.length +"  " +maze1)
-    }else{
-      // alert("dismatch" +this.props.squares.length + " "+maze1)
-           this.props.createNewGame(Array(maze1).fill(null));
-    }
-    
     this.props.makeMove(squares);
     const [winner] = this.calculateWinner(squares);
 
     if (winner) {
-      // alert( this.props.start+"sfsfsf")
+
       if(this.props.player ===winner){
-      NotificationManager.success('Congratulation Won !!', 'Congratulation!', 5000, () => {
-        var maze1 = localStorage.getItem("maze");
-maze1=parseInt(maze1)
-        this.props.createNewGame(Array(maze1).fill(null));
+      NotificationManager.success('Congratulation Won !!', 'Congratulation!', 1700, () => {
       });
     }
     else if(winner===true){
       NotificationManager.warning('The match is draw. ', 'Better luck next time !', 5000, () => {
-        var maze1 = localStorage.getItem("maze");
-        maze1=parseInt(maze1)
-        this.props.createNewGame(Array(maze1).fill(null));
       });
     }
     else{
       NotificationManager.info('You did well, better luck next time. ', 'Better luck next time !', 5000, () => {
-        var maze1 = localStorage.getItem("maze");
-        maze1=parseInt(maze1)
-        this.props.createNewGame(Array(maze1).fill(null));
       });
     }
 
@@ -336,6 +321,9 @@ const mapDispatchToProps = (dispatch) => {
     createNewGame: (squares) => {
       dispatch(createNewGame(squares));
     },
+    setSquares: (squares) => {
+      dispatch(setSquares(squares));
+    }
   };
 };
 

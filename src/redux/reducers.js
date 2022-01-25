@@ -10,6 +10,7 @@ export const types = {
   SET_GAME_MODE: "SET_GAME_MODE",
   SET_AI_TURN: "SET_AI_TURN",
   SET_GAME_START:"SET_GAME_START",
+  SET_SQUARSE:"SET_SQUARSE",
 };
 
 
@@ -19,7 +20,7 @@ export const initialState = {
   xWinCounter: 0,
   oWinCounter: 0,
   drawCounter: 0,
-  squares: Array(maze).fill(null),
+  squares: Array(9).fill(null),
   isTurnX: true,
   isPvP: false,
   start:false,
@@ -28,17 +29,20 @@ export const initialState = {
   winner: false,
 };
 
-//  localStorage.setItem("maze",9);
+ localStorage.setItem("maze",9);
+ localStorage.setItem("start", false);
 var maze = localStorage.getItem("maze");
 maze=parseInt(maze)
 // let initialState1 ={profile: JSON.parse(localStorage.getItem('profile'))};
 // let initialState ;
 
-if(maze!=null){
- initialState.maze=maze;
-}else{
-  initialState =initialState;
-}
+// if(maze!=9){
+//   alert("dfdf")
+//  initialState.squares=maze;
+// }else{
+//   alert("dfdf")
+//   // initialState = initialState;
+// }
 // root reducer
 export const rootReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -86,7 +90,7 @@ export const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         isTurnX: action.isXMoveFirst,
-        squares:  action.squares ?action.squares:Array(maze).fill(null),
+        squares: action.squares ?action.squares:Array(maze).fill(null),
         isGameEnd: false,
         player: (state.isTurnX && !state.isTurnAI) || (!state.isTurnX && state.isTurnAI) ? 'x' : 'o',
       }
@@ -114,6 +118,12 @@ export const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         isTurnAI: action.isTurnAI
+      }
+
+    case types.SET_SQUARSE:
+      return {
+        ...state,
+        squares: action.squares
       }
 
     default:

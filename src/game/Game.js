@@ -4,7 +4,7 @@ import Board from "./Board";
 import xImage from "../images/x.png";
 import oImage from "../images/o.png";
 import { resetGameState, createNewGame } from "../redux/actionCreators";
-import { setGameMode, setWhoMoveFirst, setAITurn, setXWin, setOWin, setDraw ,setGameStart} from "../redux/actionCreators";
+import { setGameMode, setWhoMoveFirst, setAITurn, setXWin, setOWin, setDraw ,setGameStart,setSquares} from "../redux/actionCreators";
 import PieceChooser from "./PieceChooser";
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
@@ -23,33 +23,21 @@ export class Game extends Component {
   }
   state = {
     open: false,
-    start:false,
+    start:"START",
   };
 
   resetGame() {
     if (!this.props.isGameEnd) {
-      // alert(this.props.isGameEnd)
       this.props.resetGame();
-    let maze= parseInt(localStorage.getItem("maze"));
-      this.props.setWhoMoveFirst(Array(maze).fill(null));
-      this.props.createNewGame(Array(maze).fill(null));
+
     } else {
       clearTimeout(this.timeout);
       this.props.createNewGame();
-      let maze= parseInt(localStorage.getItem("maze"));
-      this.props.setWhoMoveFirst(Array(maze).fill(null));
-      this.props.createNewGame(Array(maze).fill(null));
-      console.log(this.props.createNewGame)
     }
   }
 
   handleGameEnd() {
-    this.timeout = setTimeout(this.props.createNewGame, 1500);
-    // this.timeout = setTimeout(this.props.createNewGame(Array(16).fill(null)),15000);
-    //  console.log(this.timeout)
-    // let maze= parseInt(localStorage.getItem("maze"));
-    // this.props.setWhoMoveFirst(Array(maze).fill(null));
-    // this.props.createNewGame(Array(maze).fill(null));
+    this.timeout = setTimeout(this.props.createNewGame, 2500);
   }
 
   openSettings() {
@@ -72,6 +60,8 @@ export class Game extends Component {
   };
 
   selectMaze3 =()=>{
+    localStorage.setItem("start", false);
+    localStorage.setItem("TimeSet",0);
     localStorage.setItem("maze", 9);
     this.props.setWhoMoveFirst(Array(9).fill(null));
     this.props.createNewGame(Array(9).fill(null));
@@ -79,6 +69,7 @@ export class Game extends Component {
     this.setState({open:false});
   }
   selectMaze4 =()=>{
+    localStorage.setItem("start", false);
     localStorage.setItem("maze", 16);
     this.props.setWhoMoveFirst(Array(16).fill(null));
     this.props.createNewGame(Array(16).fill(null));
@@ -86,6 +77,7 @@ export class Game extends Component {
     this.setState({open:false});
   }
   selectMaze5 =()=>{
+    localStorage.setItem("start", false);
     localStorage.setItem("maze", 25);
     this.props.setWhoMoveFirst(Array(25).fill(null));
     this.props.createNewGame(Array(25).fill(null));
@@ -95,14 +87,18 @@ export class Game extends Component {
 
   
   handleStart = () => {
+    if(this.state.start==="START"){
+    this.setState({start:"PAUSE"});
+    this.props.setGameStart(true);
     localStorage.setItem("start", true);
-    if(this.state.start===true){
-    this.setState({start:false});
-    this.props.setGameStart(false);
+    }else if(this.state.start==="PAUSE"){
+      this.setState({start:"RESUME"});
+      localStorage.setItem("start", false);
+      this.props.setGameStart(false);
     }else{
-      this.setState({start:true});
+      this.setState({start:"PAUSE"});
+      localStorage.setItem("start", true);
       this.props.setGameStart(true);
-   
     }
   };
 
@@ -116,7 +112,7 @@ export class Game extends Component {
 <div style={{textAlign:"center",padding:"10px"}}><span><TimerStart/></span> </div>
 <div style={{textAlign:"center",padding:"10px" ,}}><Button  onClick={() =>this.handleStart() }  variant="contained" style={{
   background: "#277db496",
-  borderRadius: "20px"}}>START </Button></div>
+  borderRadius: "20px"}}>{this.state.start}</Button></div>
         <div className="status">
           <div className="status-o">
             <span className="win-counter">{this.props.oWinCounter} {this.props.oWinCounter < 2 ? 'win' : 'wins'}</span>
@@ -151,7 +147,7 @@ export class Game extends Component {
         open={this.state.open}
         onClose={this.handleClose()}
          //TransitionComponent={Transition}
-         keepMounted
+        //  keepMounted
         aria-describedby="alert-dialog-slide-description"
       >
         <DialogTitle><p style={{    fontFamily: "cursive",
@@ -202,7 +198,8 @@ const mapDispatchToProps = dispatch => {
       dispatch(setWhoMoveFirst(squares));
     },
     createNewGame: (squares) => {
-      dispatch(createNewGame(squares));
+      let maze= parseInt(localStorage.getItem("maze"));
+      dispatch(createNewGame(Array(maze).fill(null)));
     },
     setGameStart: start => {
       dispatch(setGameStart(start));

@@ -2,14 +2,10 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { resetGameState, createNewGame } from "../redux/actionCreators";
 import { setGameMode, setWhoMoveFirst, setAITurn, setXWin, setOWin, setDraw } from "../redux/actionCreators";
-// localStorage.setItem("maze",9);
 export class PieceChooser extends Component {
 
   render() {
-    
-    //  let maze= parseInt(localStorage.getItem("maze"));
-    //  this.props.setWhoMoveFirst(Array(maze).fill(null));
-    //  this.props.createNewGame(Array(maze).fill(null));
+    localStorage.setItem("start",false);
     return (
       <div className={'piece-chooser-wrap' + (!this.props.player ? '' : ' inactive')}>
         <h1>Which one you always choose?</h1>
